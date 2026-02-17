@@ -5,7 +5,7 @@ let w = (c.width = window.innerWidth),
 (hh = h / 2),
   (opts = {
     // change the text in here //
-    strings: ["HAPPY", "BIRTHDAY!", "to You","Nandani"],
+    strings: ["HAPPY", "BIRTHDAY!", "to You","NANDANI"],
     charSize: 30,
     charSpacing: 35,
     lineHeight: 40,
@@ -399,3 +399,69 @@ window.addEventListener("resize", function () {
 
   ctx.font = opts.charSize + "px Verdana";
 });
+
+document.getElementById('redirect-btn').addEventListener('click',()=>{
+  document.getElementsByClassName('visibility')[0].style.visibility = 'hidden';
+  document.getElementById('letter').style.display = 'block';
+    document.getElementById("confetti-canvas").style.display = "block";
+                createConfetti();
+
+  document.getElementById('c').style.visibility = 'hidden';
+})
+setTimeout(() => {
+  document.getElementsByClassName('visibility')[0].style.visibility = 'visible';
+}, 5000);
+  function createConfetti() {
+            const canvas = document.getElementById("confetti-canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const confettiCount = 200;
+            const confettiColors = [
+                "#ff4081", "#ff9e80", "#ffff8d", "#b9f6ca",
+                "#80d8ff", "#8c9eff", "#ea80fc"
+            ];
+
+            const confetti = [];
+
+            for (let i = 0; i < confettiCount; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height * 2 - canvas.height,
+                    size: Math.random() * 5 + 5,
+                    color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+                    speed: Math.random() * 3 + 2,
+                    angle: Math.random() * 360,
+                    rotation: 0,
+                    rotationSpeed: Math.random() * 10 - 5
+                });
+            }
+
+            function drawConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let stillActive = false;
+
+                confetti.forEach((c) => {
+                    if (c.y < canvas.height) {
+                        stillActive = true;
+                        ctx.save();
+                        ctx.translate(c.x, c.y);
+                        ctx.rotate((c.rotation * Math.PI) / 180);
+                        ctx.fillStyle = c.color;
+                        ctx.fillRect(-c.size / 2, -c.size / 2, c.size, c.size);
+                        ctx.restore();
+                        c.y += c.speed;
+                        c.rotation += c.rotationSpeed;
+                    }
+                });
+
+                if (stillActive) {
+                    requestAnimationFrame(drawConfetti);
+                } else {
+                    canvas.style.display = "none";
+                }
+            }
+
+            drawConfetti();
+        }

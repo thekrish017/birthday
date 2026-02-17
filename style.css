@@ -3,6 +3,85 @@ canvas {
   top: 0;
   left: 0;
 }
+body{
+  background-color: black;
+}
+/* 1. Define the Breathing Animation */
+
+.btn {
+  /* 1. The Shape */
+  
+  display: inline-block;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px; /* The pill shape */
+  position: relative;
+  cursor: pointer;
+
+  /* 2. Text Styling (Darker text is easier to read on pastels) */
+  font-family: sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #544a5d; /* Dark purple/grey text looks stamped on */
+  letter-spacing: 0.5px;
+
+  /* 3. The "Soft" Pastel Gradient */
+  /* Pink -> Soft Blue -> Lavender */
+  background: linear-gradient(90deg, #ffc4d6, #c2f0fc, #e3c4ff, #ffc4d6);
+  background-size: 300% auto;
+
+  /* 4. The Balloon Gloss (Subtle 3D) */
+  /* We use a strong white inner shadow at the top to make it look smooth */
+  box-shadow: 
+    inset 0 4px 12px rgba(255, 255, 255, 0.9), /* Top glossy highlight */
+    inset 0 -4px 10px rgba(0, 0, 0, 0.05),     /* Very subtle bottom curve */
+    0 5px 10px rgba(0, 0, 0, 0.1);             /* Gentle drop shadow */
+
+  /* 5. Animation */
+  transition: transform 0.2s ease;
+  animation: pastelShift 8s linear infinite; /* Very slow, calming movement */
+}
+
+/* The Shine Spot (The "wet" look on the balloon surface) */
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 25px;
+  width: 20px;
+  height: 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  transform: rotate(-20deg);
+}
+
+/* Hover Effect: Floats up slightly */
+.wrapper{
+  position: absolute;
+  top: 70vh;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 1000;
+}
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    inset 0 4px 12px rgba(255, 255, 255, 0.9),
+    0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Active Effect: Click press */
+.btn:active {
+  transform: scale(0.98);
+}
+
+@keyframes pastelShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+
 p {
   margin: 0 0;
   position: absolute;
@@ -24,4 +103,93 @@ p > a:first-of-type {
 }
 body {
   overflow: hidden;
+}
+.visibility{
+  visibility: hidden;
+}
+
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+    /* Optional: gentler shadow at rest */
+    box-shadow: inset 0 4px 12px rgba(255, 255, 255, 0.9), 0 5px 10px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    transform: scale(1.05); /* Grows 5% larger */
+    /* Optional: deeper shadow to look like it's lifting off */
+    box-shadow: inset 0 4px 12px rgba(255, 255, 255, 0.9), 0 15px 25px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: inset 0 4px 12px rgba(255, 255, 255, 0.9), 0 5px 10px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 2. Apply it to the button */
+.btn {
+  /* ... your existing styles ... */
+
+  /* IMPORTANT: Chain animations with a comma if you have a background one too */
+  /* Syntax: animation-name duration timing-function iteration-count */
+  animation: 
+    pastelShift 8s linear infinite,   /* Keep the color changing */
+    breathe 3s ease-in-out infinite;  /* Add the breathing */
+}
+
+#letter {
+    position: realtive;
+    width: 40%;
+    right: 0%;
+    top: -10%;
+     transform: translateY(-50%) rotate(3deg);
+    background-color: rgb(168, 117, 148);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: all 1s ease-in-out;
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+  animation: 
+    /* pastelShift 8s linear infinite,   Keep the color changing */
+    breathe 3s ease-in-out infinite;  /* Add the breathing */
+}
+
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none;
+    display: none;
+}
+
+#letter h3 {
+    color: #580000;
+    text-align: center;
+}
+
+#letter p {
+    line-height: 1.6;
+}
+.letter-wrapper{
+  position: absolute;
+  top: -10vh;
+  left: 0;
+
+  display: flex; 
+  
+
+  justify-content: center; 
+  
+
+  align-items: center; 
+  
+ 
+  height: 100vh; 
+  width: 100%;
+  width: 100%;
 }
